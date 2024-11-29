@@ -1,6 +1,7 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib "C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/new/top.v" \
 "../../../../microprocessor.srcs/sources_1/new/top.v" \
+"../../../../microprocessor.gen/sources_1/ip/blk_mem_gen_0_1/sim/blk_mem_gen_0.v" \
 "../../../../microprocessor.srcs/sim_1/new/tb_top.v" \
 
 # compile glbl module

@@ -54,9 +54,11 @@ input clk,sys_rst,
 input [15:0] din,
 output reg [15:0] dout
 );
- 
+
+
 ////////////////adding program and data memory
-reg [31:0] inst_mem [15:0]; ////program memory
+blk_mem_gen_0 inst_mem(
+clk, en, wea, PC, IR);
 reg [15:0] data_mem [15:0]; ////data memory
  
  
@@ -371,13 +373,11 @@ endtask
 /////////////////////////////////////////////
 ///////////reading program
  
-initial begin
-$readmemb("inst_data.mem",inst_mem);
-end
+
  
 ////////////////////////////////////////////////////
 //////////reading instructions one after another
-reg [2:0] count = 0;
+reg   [2:0] count = 0;
 integer PC = 0;
 
 ////////////////////////////////////////////////////
@@ -412,7 +412,7 @@ begin
    end
  
   fetch_inst: begin
-    IR          =  inst_mem[PC];   
+     
     next_state  = dec_exec_inst;
   end
   
