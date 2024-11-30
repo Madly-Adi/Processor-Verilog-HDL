@@ -66,7 +66,7 @@ set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
 set_property webtalk.parent_dir {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.cache/wt} [current_project]
 set_property parent.project_path {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.xpr} [current_project]
-set_property XPM_LIBRARIES XPM_MEMORY [current_project]
+set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property board_part_repo_paths {C:/Xilinx/pynq-z2/A.0} [current_project]
@@ -79,8 +79,18 @@ add_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocess
 add_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/mem.coe}}
 read_mem {{C:/Users/Aditya Sharma/Documents/inst_data.mem}}
 read_verilog -library xil_defaultlib {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/new/top.v}}
-read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
+read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/vio_0_1/vio_0.xci}}
+set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/vio_0_1/vio_0.xdc}}]
+set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/vio_0_1/vio_0_ooc.xdc}}]
+
+read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0_ooc.xdc}}]
+
+read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/ila_0/ila_0.xci}}
+set_property used_in_synthesis false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc}}]
+set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc}}]
+set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_v6_2/constraints/ila.xdc}}]
+set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_0_ooc.xdc}}]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -94,6 +104,8 @@ foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
 read_xdc {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/constrs_1/new/constraint_file.xdc}}
 set_property used_in_implementation false [get_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/constrs_1/new/constraint_file.xdc}}]
 
+read_xdc dont_touch.xdc
+set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 
 read_checkpoint -auto_incremental -incremental {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/utils_1/imports/synth_1/top.dcp}

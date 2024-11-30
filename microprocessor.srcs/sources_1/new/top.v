@@ -63,24 +63,52 @@ reg [15:0] data_mem [15:0]; ////data memory
  
  
  
- 
+ reg [7:0] PC = 0;
  
 reg [23:0] IR;            ////// instruction register  <--ir[31:27]--><--ir[26:22]--><--ir[21:17]--><--ir[16]--><--ir[15:11]--><--ir[10:0]-->
                           //////fields                 <---  oper  --><--   rdest --><--   rsrc1 --><--modesel--><--  rsrc2 --><--unused  -->             
                           //////fields                 <---  oper  --><--   rdest --><--   rsrc1 --><--modesel--><--  immediate_date      -->      
  
+
  // Declare a wire to connect to blk_mem_gen_0
 wire [23:0] IR_wire;
+// Declare a wire to connect to vio_0
+wire [7:0] dout_wire;
+
+ila_0 your_instance_name (
+	.clk(clk), // input wire clk
+
+
+	.probe0(sys_rst), // input wire [0:0]  probe0  
+	.probe1(din), // input wire [7:0]  probe1 
+	.probe2(dout) // input wire [7:0]  probe2
+);
+
+
+ vio_0 vio_top (
+  .clk(clk),                // input wire clk
+  .probe_in0(sys_rst),    // input wire [0 : 0] probe_in0
+  .probe_in1(din),    // input wire [7 : 0] probe_in1
+  .probe_out0(dout_wire)  // output wire [7 : 0] probe_out0
+);
 
 blk_mem_gen_0 inst_mem(
 clk, PC, IR_wire);
 
 // Use an always block to transfer data from the wire to the reg IR
 always @(posedge clk or posedge sys_rst) begin
-    if (sys_rst)
+    if (sys_rst) begin
         IR <= 24'b0; // Reset IR
-    else
+        dout <= 8'b0; // Reset dout
+        end
+   else if (`oper_type == `senddout) begin 
+        dout  <= data_mem[`isrc];
+   end 
+   
+    else begin
         IR <= IR_wire; // Capture instruction data
+        dout <= dout_wire;
+        end
 end
 
 
@@ -101,7 +129,7 @@ reg stop = 0;
  
 task decode_inst();
  begin
- dout = 8'h0;  // Default assignment to prevent latch
+ 
   jmp_flag = 1'b0;
   stop = 1'b0;
    
@@ -232,9 +260,9 @@ end
 /////////////////////////////////////////////////////////////
  
  
-`senddout: begin
-   dout  = data_mem[`isrc]; 
-end
+//`senddout: begin
+//   dout  = data_mem[`isrc]; 
+//end
  
 /////////////////////////////////////////////////////////////
  
@@ -396,7 +424,7 @@ endtask
 ////////////////////////////////////////////////////
 //////////reading instructions one after another
 reg   [2:0] count = 0;
-reg [7:0] PC = 0;
+
 
 ////////////////////////////////////////////////////
 ////////////////////////////////// fsm states
@@ -425,17 +453,17 @@ begin
   case(state)
    idle: begin
      PC         = 0;
-     dout = 8'h0;  // Initialize dout to prevent latch
+     
      next_state = fetch_inst;
    end
  
   fetch_inst: begin
-     dout = 8'h0;  // Prevent latch
+     
     next_state  = dec_exec_inst;
   end
   
   dec_exec_inst: begin
-  dout = 8'h0;  // Prevent latch
+  
     decode_inst();
     decode_condflag();
     next_state  = delay_next_inst;   
@@ -468,7 +496,7 @@ begin
  end
   
   default : begin
-    dout = 8'h0; // Prevent latch
+    
    next_state = idle;
    end 
   
