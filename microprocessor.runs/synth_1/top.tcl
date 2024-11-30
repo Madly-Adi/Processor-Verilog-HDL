@@ -56,26 +56,32 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param chipscope.maxJobs 3
-set_param checkpoint.writeSynthRtdsInDcp 1
-set_msg_config -id {Synth 8-256} -limit 10000
-set_msg_config -id {Synth 8-638} -limit 10000
+set_param tcl.statsThreshold 360
 OPTRACE "Creating in-memory project" START { }
-create_project -in_memory -part xc7a35tcpg236-1
+create_project -in_memory -part xc7z020clg400-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
+set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
 set_property webtalk.parent_dir {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.cache/wt} [current_project]
 set_property parent.project_path {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.xpr} [current_project]
+set_property XPM_LIBRARIES XPM_MEMORY [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
+set_property board_part_repo_paths {C:/Xilinx/pynq-z2/A.0} [current_project]
+set_property board_part tul.com.tw:pynq-z2:part0:1.0 [current_project]
 set_property ip_output_repo {c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.cache/ip} [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
+add_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/mem.coe}}
+add_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/mem.coe}}
 read_mem {{C:/Users/Aditya Sharma/Documents/inst_data.mem}}
 read_verilog -library xil_defaultlib {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/new/top.v}}
+read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
+set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0_ooc.xdc}}]
+
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -94,7 +100,7 @@ read_checkpoint -auto_incremental -incremental {C:/Users/Aditya Sharma/Documents
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top top -part xc7a35tcpg236-1
+synth_design -top top -part xc7z020clg400-1
 OPTRACE "synth_design" END { }
 if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
  send_msg_id runtcl-6 info "Synthesis results are not added to the cache due to CRITICAL_WARNING"

@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
  
 ///////////fields of IR
-`define oper_type IR[31:27]
-`define rdst      IR[26:22]
-`define rsrc1     IR[21:17]
-`define imm_mode  IR[16]
-`define rsrc2     IR[15:11]
-`define isrc      IR[15:0]
+`define oper_type IR[23:19] 
+`define rdst      IR[18:14] 
+`define rsrc1     IR[13:9] 
+`define imm_mode  IR[8]    
+`define rsrc2     IR[7:3] 
+`define isrc      IR[7:0]  
  
  
 ////////////////arithmetic operation
@@ -56,26 +56,41 @@ output reg [15:0] dout
 );
 
 
+
 ////////////////adding program and data memory
-blk_mem_gen_0 inst_mem(
-clk, en, wea, PC, IR);
+
 reg [15:0] data_mem [15:0]; ////data memory
  
  
  
  
  
-reg [31:0] IR;            ////// instruction register  <--ir[31:27]--><--ir[26:22]--><--ir[21:17]--><--ir[16]--><--ir[15:11]--><--ir[10:0]-->
+reg [23:0] IR;            ////// instruction register  <--ir[31:27]--><--ir[26:22]--><--ir[21:17]--><--ir[16]--><--ir[15:11]--><--ir[10:0]-->
                           //////fields                 <---  oper  --><--   rdest --><--   rsrc1 --><--modesel--><--  rsrc2 --><--unused  -->             
                           //////fields                 <---  oper  --><--   rdest --><--   rsrc1 --><--modesel--><--  immediate_date      -->      
  
-reg [15:0] GPR [31:0] ;   ///////general purpose register gpr[0] ....... gpr[31]
+ // Declare a wire to connect to blk_mem_gen_0
+wire [23:0] IR_wire;
+
+blk_mem_gen_0 inst_mem(
+clk, PC, IR_wire);
+
+// Use an always block to transfer data from the wire to the reg IR
+always @(posedge clk or posedge sys_rst) begin
+    if (sys_rst)
+        IR <= 24'b0; // Reset IR
+    else
+        IR <= IR_wire; // Capture instruction data
+end
+
+
+reg [7:0] GPR [31:0] ;   ///////general purpose register gpr[0] ....... gpr[31]
  
  
  
-reg [15:0] SGPR ;      ///// msb of multiplication --> special register
+reg [8:0] SGPR ;      ///// msb of multiplication --> special register
  
-reg [31:0] mul_res;
+reg [15:0] mul_res;
  
  
 reg sign = 0, zero = 0, overflow = 0, carry = 0; ///condition flag
@@ -86,6 +101,9 @@ reg stop = 0;
  
 task decode_inst();
  begin
+ dout = 8'h0;  // Default assignment to prevent latch
+  jmp_flag = 1'b0;
+  stop = 1'b0;
    
 jmp_flag = 1'b0;
 stop     = 1'b0;
@@ -132,8 +150,8 @@ end
      else
         mul_res   = GPR[`rsrc1] * GPR[`rsrc2];
         
-     GPR[`rdst]   =  mul_res[15:0];
-     SGPR         =  mul_res[31:16];
+     GPR[`rdst]   =  mul_res[7:0];
+     SGPR         =  mul_res[15:8];
 end
  
 ///////////////////////////////////////////////////////////// bitwise or
@@ -319,12 +337,12 @@ if(`oper_type == `add)
       if(`imm_mode)
          begin
          temp_sum = GPR[`rsrc1] + `isrc;
-         carry    = temp_sum[16]; 
+         carry    = temp_sum[8]; 
          end
       else
          begin
          temp_sum = GPR[`rsrc1] + GPR[`rsrc2];
-         carry    = temp_sum[16]; 
+         carry    = temp_sum[8]; 
          end   end
    else
     begin
@@ -335,7 +353,7 @@ if(`oper_type == `add)
 ///////////////////// zero bit
  
 if(`oper_type == `mul)
-  zero =  ~((|SGPR[15:0]) | (|GPR[`rdst]));
+  zero =  ~((|SGPR[7:0]) | (|GPR[`rdst]));
 else
   zero =  ~(|GPR[`rdst]); 
  
@@ -345,16 +363,16 @@ else
 if(`oper_type == `add)
      begin
        if(`imm_mode)
-         overflow = ( (~GPR[`rsrc1][15] & ~IR[15] & GPR[`rdst][15] ) | (GPR[`rsrc1][15] & IR[15] & ~GPR[`rdst][15]) );
+         overflow = ( (~GPR[`rsrc1][7] & ~IR[7] & GPR[`rdst][7] ) | (GPR[`rsrc1][7] & IR[7] & ~GPR[`rdst][7]) );
        else
-         overflow = ( (~GPR[`rsrc1][15] & ~GPR[`rsrc2][15] & GPR[`rdst][15]) | (GPR[`rsrc1][15] & GPR[`rsrc2][15] & ~GPR[`rdst][15]));
+         overflow = ( (~GPR[`rsrc1][7] & ~GPR[`rsrc2][7] & GPR[`rdst][7]) | (GPR[`rsrc1][7] & GPR[`rsrc2][7] & ~GPR[`rdst][7]));
      end
   else if(`oper_type == `sub)
     begin
        if(`imm_mode)
-         overflow = ( (~GPR[`rsrc1][15] & IR[15] & GPR[`rdst][15] ) | (GPR[`rsrc1][15] & ~IR[15] & ~GPR[`rdst][15]) );
+         overflow = ( (~GPR[`rsrc1][7] & IR[7] & GPR[`rdst][7] ) | (GPR[`rsrc1][7] & ~IR[7] & ~GPR[`rdst][7]) );
        else
-         overflow = ( (~GPR[`rsrc1][15] & GPR[`rsrc2][15] & GPR[`rdst][15]) | (GPR[`rsrc1][15] & ~GPR[`rsrc2][15] & ~GPR[`rdst][15]));
+         overflow = ( (~GPR[`rsrc1][7] & GPR[`rsrc2][7] & GPR[`rdst][7]) | (GPR[`rsrc1][7] & ~GPR[`rsrc2][7] & ~GPR[`rdst][7]));
     end 
   else
      begin
@@ -378,7 +396,7 @@ endtask
 ////////////////////////////////////////////////////
 //////////reading instructions one after another
 reg   [2:0] count = 0;
-integer PC = 0;
+reg [7:0] PC = 0;
 
 ////////////////////////////////////////////////////
 ////////////////////////////////// fsm states
@@ -406,17 +424,18 @@ always@(*)
 begin
   case(state)
    idle: begin
-     IR         = 32'h0;
      PC         = 0;
+     dout = 8'h0;  // Initialize dout to prevent latch
      next_state = fetch_inst;
    end
  
   fetch_inst: begin
-     
+     dout = 8'h0;  // Prevent latch
     next_state  = dec_exec_inst;
   end
   
   dec_exec_inst: begin
+  dout = 8'h0;  // Prevent latch
     decode_inst();
     decode_condflag();
     next_state  = delay_next_inst;   
@@ -448,7 +467,10 @@ begin
       next_state = sense_halt;
  end
   
-  default : next_state = idle;
+  default : begin
+    dout = 8'h0; // Prevent latch
+   next_state = idle;
+   end 
   
   endcase
   
