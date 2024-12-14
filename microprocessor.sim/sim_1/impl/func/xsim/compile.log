@@ -79,6 +79,7 @@ INFO: [VRFC 10-311] analyzing module dbg_hub_xsdbm_v3_0_2_wrfifo
 INFO: [VRFC 10-311] analyzing module dbg_hub_xsdbm_v3_0_2_wrreg
 INFO: [VRFC 10-311] analyzing module dbg_hub_xsdbm_v3_0_2_xsdbm
 INFO: [VRFC 10-311] analyzing module dbg_hub_xsdbm_v3_0_2_xsdbm_id
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0
 INFO: [VRFC 10-311] analyzing module ila_0
 INFO: [VRFC 10-311] analyzing module top
 INFO: [VRFC 10-311] analyzing module vio_0
@@ -195,6 +196,12 @@ INFO: [VRFC 10-311] analyzing module ila_0_xsdbs_v1_0_4_reg_stream
 INFO: [VRFC 10-311] analyzing module ila_0_xsdbs_v1_0_4_reg_stream__parameterized0
 INFO: [VRFC 10-311] analyzing module ila_0_xsdbs_v1_0_4_xsdbs
 INFO: [VRFC 10-311] analyzing module vio_0_xsdbs_v1_0_4_xsdbs
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0_blk_mem_gen_generic_cstr
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0_blk_mem_gen_prim_width
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0_blk_mem_gen_prim_wrapper_init
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0_blk_mem_gen_top
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0_blk_mem_gen_v8_4_8
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_0_blk_mem_gen_v8_4_8_synth
 INFO: [VRFC 10-311] analyzing module ila_0_blk_mem_gen_v8_4_8
 INFO: [VRFC 10-311] analyzing module ila_0_blk_mem_gen_v8_4_8_blk_mem_gen_generic_cstr
 INFO: [VRFC 10-311] analyzing module ila_0_blk_mem_gen_v8_4_8_blk_mem_gen_prim_width

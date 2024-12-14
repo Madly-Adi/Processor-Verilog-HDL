@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
  
 ///////////fields of IR
-`define oper_type IR[23:19] 
-`define rdst      IR[18:14] 
-`define rsrc1     IR[13:9] 
+`define oper_type IR[19:15] 
+`define rdst      IR[14:12] 
+`define rsrc1     IR[11:9] 
 `define imm_mode  IR[8]    
-`define rsrc2     IR[7:3] 
+`define rsrc2     IR[7:5] 
 `define isrc      IR[7:0]  
  
  
@@ -45,27 +45,27 @@
  
 module top(
 input clk,sys_rst,
-input [15:0] din,
-output reg [15:0] dout
+input [7:0] din,
+output reg [7:0] dout
 );
 
 
 
 ////////////////adding program and data memory
 
-reg [15:0] data_mem [15:0]; ////data memory
+reg [7:0] data_mem [7:0]; ////data memory
  
  
  
  reg [7:0] PC = 0;
  
-reg [23:0] IR;            ////// instruction register  <--ir[31:27]--><--ir[26:22]--><--ir[21:17]--><--ir[16]--><--ir[15:11]--><--ir[10:0]-->
+reg [19:0] IR;            ////// instruction register  <--ir[31:27]--><--ir[26:22]--><--ir[21:17]--><--ir[16]--><--ir[15:11]--><--ir[10:0]-->
                           //////fields                 <---  oper  --><--   rdest --><--   rsrc1 --><--modesel--><--  rsrc2 --><--unused  -->             
                           //////fields                 <---  oper  --><--   rdest --><--   rsrc1 --><--modesel--><--  immediate_date      -->      
  
 
  // Declare a wire to connect to blk_mem_gen_0
-wire [23:0] IR_wire;
+wire [19:0] IR_wire;
 // Declare a wire to connect to vio_0
 wire [7:0] dout_wire;
 
@@ -95,7 +95,7 @@ blk_mem_gen_0 inst_mem (
 // Use an always block to transfer data from the wire to the reg IR
 always @(posedge clk or posedge sys_rst) begin
     if (sys_rst) begin
-        IR <= 24'b0; // Reset IR
+        IR <= 20'b0; // Reset IR
         dout <= 8'b0; // Reset dout
         end
    else if (`oper_type == `senddout) begin 
@@ -109,26 +109,23 @@ always @(posedge clk or posedge sys_rst) begin
 end
 
 
-reg [7:0] GPR [31:0] ;   ///////general purpose register gpr[0] ....... gpr[31]
+reg [7:0] GPR [7:0] ;   ///////general purpose register gpr[0] ....... gpr[31]
  
  
  
-reg [8:0] SGPR ;      ///// msb of multiplication --> special register
+reg [7:0] SGPR ;      ///// msb of multiplication --> special register
  
 reg [15:0] mul_res;
  
  
 reg sign = 0, zero = 0, overflow = 0, carry = 0; ///condition flag
-reg [16:0] temp_sum;
+reg [8:0] temp_sum;
  
 reg jmp_flag = 0;
 reg stop = 0;
  
 task decode_inst();
  begin
- 
-  jmp_flag = 1'b0;
-  stop = 1'b0;
    
 jmp_flag = 1'b0;
 stop     = 1'b0;
@@ -351,9 +348,9 @@ begin
  
 /////////////////sign bit
 if(`oper_type == `mul)
-  sign = SGPR[15];
+  sign = SGPR[7];
 else
-  sign = GPR[`rdst][15];
+  sign = GPR[`rdst][7];
  
 ////////////////carry bit
  

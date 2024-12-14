@@ -3,8 +3,8 @@
 # SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
 # IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
 # SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
-# Start of session at: Sat Dec 14 21:09:35 2024
-# Process ID: 19528
+# Start of session at: Sun Dec 15 03:10:50 2024
+# Process ID: 10652
 # Current directory: C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.runs/impl_1
 # Command line: vivado.exe -log top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top.tcl -notrace
 # Log file: C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.runs/impl_1/top.vdi
@@ -19,6 +19,6 @@
 # Host memory       :14877 MB
 # Swap memory       :6710 MB
 # Total Virtual     :21588 MB
-# Available Virtual :7546 MB
+# Available Virtual :6906 MB
 #-----------------------------------------------------------
 source top.tcl -notrace
