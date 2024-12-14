@@ -9,43 +9,37 @@
 `define isrc      IR[7:0]  
  
  
-////////////////arithmetic operation
-`define movsgpr        5'b00000
-`define mov            5'b00001
-`define add            5'b00010
-`define sub            5'b00011
-`define mul            5'b00100
- 
-////////////////logical operations : and or xor xnor nand nor not
- 
-`define ror            5'b00101
-`define rand           5'b00110
-`define rxor           5'b00111
-`define rxnor          5'b01000
-`define rnand          5'b01001
-`define rnor           5'b01010
-`define rnot           5'b01011
- 
-/////////////////////// load & store instructions
- 
-`define storereg       5'b01101   //////store content of register in data memory
-`define storedin       5'b01110   ////// store content of din bus in data memory
-`define senddout       5'b01111   /////send data from DM to dout bus
-`define sendreg        5'b10001   ////// send data from DM to register
- 
-///////////////////////////// Jump and branch instructions
-`define jump           5'b10010  ////jump to address
-`define jcarry         5'b10011  ////jump if carry
-`define jnocarry       5'b10100
-`define jsign          5'b10101  ////jump if sign
-`define jnosign        5'b10110
-`define jzero          5'b10111  //// jump if zero
-`define jnozero        5'b11000
-`define joverflow      5'b11001 ////jump if overflow
-`define jnooverflow    5'b11010
- 
-//////////////////////////halt 
-`define halt           5'b11011
+//arithmetic operations
+`define movsgpr     5'b00000
+`define mov         5'b00001
+`define add         5'b00010
+`define sub         5'b00011
+`define mul         5'b00100
+//logical operations
+`define ror         5'b00101
+`define rand        5'b00110
+`define rxor        5'b00111
+`define rxnor       5'b01000
+`define rnand       5'b01001
+`define rnor        5'b01010
+`define rnot        5'b01011
+//load and store operations
+`define sendreg     5'b01100
+`define storereg    5'b01101
+`define storedin    5'b01110
+`define senddout    5'b01111
+//jump operations
+`define jump        5'b10000
+`define jcarry      5'b10001
+`define jnocarry    5'b10010
+`define jsign       5'b10011
+`define jnosign     5'b10100
+`define jzero       5'b10101
+`define jnozero     5'b10110
+`define joverflow   5'b10111
+`define jnooverflow 5'b11000
+//halt
+`define halt        5'b11111
  
  
  
@@ -92,8 +86,11 @@ ila_0 your_instance_name (
   .probe_out0(dout_wire)  // output wire [7 : 0] probe_out0
 );
 
-blk_mem_gen_0 inst_mem(
-clk, PC, IR_wire);
+blk_mem_gen_0 inst_mem (
+  .clka(clk),    // input wire clka
+  .addra(PC),  // input wire [7 : 0] addra
+  .douta(IR_wire)  // output wire [19 : 0] douta
+);
 
 // Use an always block to transfer data from the wire to the reg IR
 always @(posedge clk or posedge sys_rst) begin

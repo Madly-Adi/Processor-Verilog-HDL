@@ -56,7 +56,6 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "blk_mem_gen_0_synth_1" START { ROLLUP_AUTO }
-set_param tcl.statsThreshold 360
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
 OPTRACE "Creating in-memory project" START { }
@@ -68,7 +67,7 @@ set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
 set_property webtalk.parent_dir {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.cache/wt} [current_project]
 set_property parent.project_path {C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.xpr} [current_project]
-set_property XPM_LIBRARIES XPM_MEMORY [current_project]
+set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property board_part_repo_paths {C:/Xilinx/pynq-z2/A.0} [current_project]
@@ -77,7 +76,7 @@ set_property ip_output_repo {c:/Users/Aditya Sharma/Documents/Verilog/microproce
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
+read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0_ooc.xdc}}]
 
 OPTRACE "Adding files" END { }

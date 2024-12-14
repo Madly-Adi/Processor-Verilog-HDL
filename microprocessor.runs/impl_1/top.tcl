@@ -104,7 +104,6 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param tcl.statsThreshold 360
   set_param chipscope.maxJobs 3
   set_param runs.launchOptions { -jobs 6  }
 OPTRACE "create in-memory project" START { }
@@ -123,9 +122,9 @@ OPTRACE "set parameters" START { }
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
   add_files -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.runs/synth_1/top.dcp}}
-  read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/vio_0_1/vio_0.xci}}
+  read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/vio_0_1/vio_0.xci}}
   read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
-  read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/ila_0/ila_0.xci}}
+  read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/ila_0/ila_0.xci}}
 OPTRACE "read constraints: implementation" START { }
   read_xdc {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/constrs_1/new/constraint_file.xdc}}
 OPTRACE "read constraints: implementation" END { }

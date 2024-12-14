@@ -56,7 +56,7 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param tcl.statsThreshold 360
+set_param chipscope.maxJobs 3
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7z020clg400-1
 
@@ -75,18 +75,17 @@ set_property ip_output_repo {c:/Users/Aditya Sharma/Documents/Verilog/microproce
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-add_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/mem.coe}}
 add_files {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/mem.coe}}
 read_mem {{C:/Users/Aditya Sharma/Documents/inst_data.mem}}
 read_verilog -library xil_defaultlib {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/new/top.v}}
-read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/vio_0_1/vio_0.xci}}
+read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/vio_0_1/vio_0.xci}}
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/vio_0_1/vio_0.xdc}}]
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/vio_0_1/vio_0_ooc.xdc}}]
 
 read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0.xci}}
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/blk_mem_gen_0_2/blk_mem_gen_0_ooc.xdc}}]
 
-read_ip -quiet {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/ila_0/ila_0.xci}}
+read_ip -quiet {{C:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.srcs/sources_1/ip/ila_0/ila_0.xci}}
 set_property used_in_synthesis false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc}}]
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc}}]
 set_property used_in_implementation false [get_files -all {{c:/Users/Aditya Sharma/Documents/Verilog/microprocessor/microprocessor.gen/sources_1/ip/ila_0/ila_v6_2/constraints/ila.xdc}}]
